@@ -4,11 +4,24 @@ import { NewTodoForm } from "./NewTodoForm";
 import { TodoList } from "./TodoList";
 function App() {
 
+  // const [todos, setTodos] = useState(() => {
+  //   const localValue = localStorage.getItem("ITEMS");
+  //   if(localValue === null) return
+  //   return JSON.parse(localValue);
+  // });
   const [todos, setTodos] = useState(() => {
     const localValue = localStorage.getItem("ITEMS");
-    if(localValue === null) return
-    return JSON.parse(localValue);
+    if (localValue === null) {
+      return []; // or any default value that makes sense for your application
+    }
+    try {
+      return JSON.parse(localValue);
+    } catch (error) {
+      console.error("Error parsing JSON from localStorage:", error);
+      return []; // Handle parsing errors by returning a default value
+    }
   });
+  
 
   useEffect(()=>{
     localStorage.setItem("ITEMS", JSON.stringify(todos))
